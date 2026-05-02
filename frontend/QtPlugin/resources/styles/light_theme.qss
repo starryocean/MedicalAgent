@@ -1,0 +1,51 @@
+/* Qt Creator default-style light theme for Translation Agent */
+
+QWidget {
+    background-color: #EFF0F1;
+    color: #232629;
+    font-family: "Segoe UI", "SF Pro Text", sans-serif;
+}
+
+QToolTip {
+    background: #F0F0F0;
+    color: #232629;
+    border: 1px solid #C8C8C8;
+    padding: 4px 8px;
+    border-radius: 3px;
+}
+
+QScrollBar:vertical {
+    background: #EFF0F1;
+    width: 10px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background: #C8C8C8;
+    border-radius: 4px;
+    min-height: 20px;
+    margin: 2px;
+}
+QScrollBar::handle:vertical:hover { background: #A0A0A0; }
+QScrollBar::handle:vertical:pressed { background: #787878; }
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical { height: 0; }
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical { background: none; }
+
+QScrollBar:horizontal {
+    background: #EFF0F1;
+    height: 10px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background: #C8C8C8;
+    border-radius: 4px;
+    min-width: 20px;
+    margin: 2px;
+}
+QScrollBar::handle:horizontal:hover { background: #A0A0A0; }
+QScrollBar::handle:horizontal:pressed { background: #787878; }
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal { width: 0; }
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal { background: none; }

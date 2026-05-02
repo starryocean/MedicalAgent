@@ -23,56 +23,35 @@ void DiffViewer::setupUi() {
 
     // ── Header ─────────────────────────────────────────────────────
     auto* header = new QLabel("Translation Review", this);
-    header->setStyleSheet(
-        "background: #181825; color: #CDD6F4; font-weight: bold;"
-        "font-size: 13px; padding: 8px 12px;"
-        "border-bottom: 1px solid #313244;"
-    );
+    header->setObjectName("diffHeader");
 
     // ── Stats bar ──────────────────────────────────────────────────
     m_statsLabel = new QLabel(this);
-    m_statsLabel->setStyleSheet(
-        "background: #1E1E2E; color: #A6ADC8; font-size: 12px;"
-        "padding: 4px 12px; border-bottom: 1px solid #313244;"
-    );
+    m_statsLabel->setObjectName("statsLabel");
 
     // ── Translation table ──────────────────────────────────────────
     m_summaryEdit = new QTextEdit(this);
+    m_summaryEdit->setObjectName("summaryEdit");
     m_summaryEdit->setReadOnly(true);
     m_summaryEdit->setMinimumHeight(200);
-    m_summaryEdit->setStyleSheet(
-        "QTextEdit { background: #1E1E2E; color: #CDD6F4; border: none;"
-        "font-family: 'JetBrains Mono', monospace; font-size: 12px; }"
-    );
 
     // ── Diff view ──────────────────────────────────────────────────
     m_diffEdit = new QTextEdit(this);
+    m_diffEdit->setObjectName("diffEdit");
     m_diffEdit->setReadOnly(true);
     m_diffEdit->setMaximumHeight(150);
-    m_diffEdit->setStyleSheet(
-        "QTextEdit { background: #11111B; color: #CDD6F4; border: none;"
-        "font-family: 'JetBrains Mono', monospace; font-size: 11px; }"
-    );
 
     // ── Action buttons ─────────────────────────────────────────────
     auto* buttonBar = new QWidget(this);
-    buttonBar->setStyleSheet("background: #181825; border-top: 1px solid #313244;");
+    buttonBar->setObjectName("buttonBar");
     auto* btnLayout = new QHBoxLayout(buttonBar);
     btnLayout->setContentsMargins(12, 8, 12, 8);
 
     m_rejectButton = new QPushButton("Discard", this);
-    m_rejectButton->setStyleSheet(
-        "QPushButton { background: #45475A; color: #CDD6F4; border-radius: 6px;"
-        "padding: 7px 18px; font-size: 13px; border: none; }"
-        "QPushButton:hover { background: #585B70; }"
-    );
+    m_rejectButton->setObjectName("rejectButton");
 
-    m_acceptButton = new QPushButton("Apply to english.ini", this);
-    m_acceptButton->setStyleSheet(
-        "QPushButton { background: #40A02B; color: white; border-radius: 6px;"
-        "padding: 7px 18px; font-size: 13px; border: none; font-weight: bold; }"
-        "QPushButton:hover { background: #4CC32E; }"
-    );
+    m_acceptButton = new QPushButton("Apply", this);
+    m_acceptButton->setObjectName("acceptButton");
 
     btnLayout->addWidget(m_rejectButton);
     btnLayout->addStretch();

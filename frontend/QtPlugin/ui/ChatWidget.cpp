@@ -32,8 +32,8 @@ void MessageBubble::setupUi(const ChatMessage& message) {
     m_contentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     m_contentLabel->setText(message.content());
 
+    m_timestampLabel->setObjectName("timestampLabel");
     m_timestampLabel->setText(message.timestamp().toString("HH:mm"));
-    m_timestampLabel->setStyleSheet("color: #666666; font-size: 10px;");
     m_timestampLabel->setAlignment(Qt::AlignBottom);
 
     bool isUser = message.isFromUser();
@@ -44,19 +44,11 @@ void MessageBubble::setupUi(const ChatMessage& message) {
         layout->addWidget(m_contentLabel);
         layout->addWidget(m_timestampLabel);
         m_contentLabel->setProperty("role", "user");
-        m_contentLabel->setStyleSheet(
-            "background: #2563EB; color: white; border-radius: 12px;"
-            "padding: 8px 12px; max-width: 480px;"
-        );
     } else {
         layout->addWidget(m_timestampLabel);
         layout->addWidget(m_contentLabel);
         layout->addStretch();
         m_contentLabel->setProperty("role", "assistant");
-        m_contentLabel->setStyleSheet(
-            "background: #1E1E2E; color: #CDD6F4; border-radius: 12px;"
-            "padding: 8px 12px; max-width: 480px; border: 1px solid #313244;"
-        );
     }
 }
 
@@ -80,12 +72,10 @@ void ChatWidget::setupUi() {
     m_scrollArea = new QScrollArea(this);
     m_scrollArea->setWidgetResizable(true);
     m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_scrollArea->setStyleSheet(
-        "QScrollArea { border: none; background: #11111B; }"
-    );
+    // QScrollArea and its container styled via QSS object selectors
 
     m_messagesContainer = new QWidget();
-    m_messagesContainer->setStyleSheet("background: #11111B;");
+    m_messagesContainer->setObjectName("messagesContainer");
     m_messagesLayout    = new QVBoxLayout(m_messagesContainer);
     m_messagesLayout->setSpacing(4);
     m_messagesLayout->setContentsMargins(8, 8, 8, 8);
@@ -95,44 +85,29 @@ void ChatWidget::setupUi() {
 
     // ── Loading indicator ──────────────────────────────────────────
     m_loadingLabel = new QLabel("Translating...", this);
-    m_loadingLabel->setStyleSheet(
-        "color: #89B4FA; font-size: 12px; padding: 4px 12px;"
-        "background: #1E1E2E;"
-    );
+    m_loadingLabel->setObjectName("loadingLabel");
     m_loadingLabel->setAlignment(Qt::AlignCenter);
     m_loadingLabel->hide();
 
     // ── Input area ─────────────────────────────────────────────────
     auto* inputFrame = new QWidget(this);
-    inputFrame->setStyleSheet(
-        "QWidget { background: #1E1E2E; border-top: 1px solid #313244; }"
-    );
+    inputFrame->setObjectName("inputFrame");
     auto* inputLayout = new QHBoxLayout(inputFrame);
     inputLayout->setContentsMargins(8, 8, 8, 8);
     inputLayout->setSpacing(6);
 
     m_inputEdit = new QTextEdit(this);
+    m_inputEdit->setObjectName("inputEdit");
     m_inputEdit->setPlaceholderText(
         "Ask to translate... (Enter to send, Shift+Enter for new line)"
     );
     m_inputEdit->setMaximumHeight(100);
     m_inputEdit->setMinimumHeight(38);
-    m_inputEdit->setStyleSheet(
-        "QTextEdit { background: #313244; color: #CDD6F4; border-radius: 6px;"
-        "padding: 6px 10px; border: 1px solid #45475A; font-size: 13px; }"
-        "QTextEdit:focus { border-color: #89B4FA; }"
-    );
 
     m_sendButton = new QPushButton(QString::fromUtf8("\xe2\x86\x91"), this);
+     m_sendButton->setObjectName("sendButton");
     m_sendButton->setFixedSize(34, 34);
     m_sendButton->setToolTip("Send translation request (Enter)");
-    m_sendButton->setStyleSheet(
-        "QPushButton { background: #2563EB; color: white; border-radius: 17px;"
-        "font-size: 16px; font-weight: bold; border: none; }"
-        "QPushButton:hover  { background: #1D4ED8; }"
-        "QPushButton:pressed { background: #1E40AF; }"
-        "QPushButton:disabled { background: #45475A; }"
-    );
 
     inputLayout->addWidget(m_inputEdit);
     inputLayout->addWidget(m_sendButton, 0, Qt::AlignBottom);
@@ -215,10 +190,7 @@ void ChatWidget::setTranslationContext(const TranslationContext& ctx) {
             .arg(ctx.targetLanguage);
 
         auto* hint = new QLabel(preview, m_messagesContainer);
-        hint->setStyleSheet(
-            "color: #89B4FA; font-size: 11px; padding: 3px 8px;"
-            "background: #1E1E2E; border-radius: 4px; border: 1px solid #313244;"
-        );
+        hint->setObjectName("contextHint");
         // Insert before the last stretch
         m_messagesLayout->insertWidget(m_messagesLayout->count() - 1, hint);
         QTimer::singleShot(50, this, &ChatWidget::scrollToBottom);

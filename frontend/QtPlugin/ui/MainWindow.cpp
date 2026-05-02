@@ -46,17 +46,9 @@ MainWindow::MainWindow(QWidget* parent)
 
 void MainWindow::setupUi() {
     // Apply dark theme to entire window
-    setStyleSheet(
-        "QMainWindow { background: #11111B; }"
-        "QMenuBar { background: #181825; color: #CDD6F4; border-bottom: 1px solid #313244; }"
-        "QMenuBar::item:selected { background: #313244; }"
-        "QMenu { background: #1E1E2E; color: #CDD6F4; border: 1px solid #313244; }"
-        "QMenu::item:selected { background: #2563EB; }"
-        "QStatusBar { background: #181825; color: #A6ADC8; font-size: 11px; }"
-        "QSplitter::handle { background: #313244; }"
-        "QSplitter::handle:horizontal { width: 1px; }"
-        "QSplitter::handle:vertical   { height: 1px; }"
-    );
+    // Application-wide dark theme is applied via dark_theme.qss
+    // This includes QMainWindow, QMenuBar, QMenu, QStatusBar, QSplitter
+
 
     // Instantiate panels
     m_fileExplorer = new FileExplorer(this);
@@ -304,10 +296,13 @@ void MainWindow::showAbout() {
 
 void MainWindow::updateStatusBar(const QString& message, bool isError) {
     if (isError) {
-        statusBar()->setStyleSheet("QStatusBar { color: #F38BA8; }");
+        statusBar()->setProperty("role", "error");
     } else {
-        statusBar()->setStyleSheet("QStatusBar { color: #A6ADC8; }");
+        statusBar()->setProperty("role", "normal");
     }
+    // Force style refresh after property change
+    statusBar()->style()->unpolish(statusBar());
+    statusBar()->style()->polish(statusBar());
     statusBar()->showMessage(message, 8000);
 }
 

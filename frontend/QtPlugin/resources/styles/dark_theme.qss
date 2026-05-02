@@ -1,5 +1,12 @@
-/* Catppuccin Mocha theme for Translation Agent */
-/* Base variables simulated through consistent color usage */
+/* ================================================================
+ * Catppuccin Mocha theme for Translation Agent
+ * ----------------------------------------------------------------
+ * This file contains ALL styling for the application.
+ * UI objects use setProperty("role", ...) and object names to
+ * match these selectors — no inline styles in C++ code.
+ * ================================================================ */
+
+/* ── Global ─────────────────────────────────────────────────────── */
 
 QWidget {
     background-color: #1E1E2E;
@@ -14,6 +21,64 @@ QToolTip {
     padding: 4px 8px;
     border-radius: 4px;
 }
+
+/* ── MainWindow ─────────────────────────────────────────────────── */
+
+QMainWindow {
+    background: #11111B;
+}
+
+/* ── MenuBar & Menu ─────────────────────────────────────────────── */
+
+QMenuBar {
+    background: #181825;
+    color: #CDD6F4;
+    border-bottom: 1px solid #313244;
+}
+QMenuBar::item:selected {
+    background: #313244;
+}
+
+QMenu {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    border: 1px solid #313244;
+}
+QMenu::item:selected {
+    background: #2563EB;
+}
+
+/* ── StatusBar ──────────────────────────────────────────────────── */
+
+QStatusBar {
+    background: #181825;
+    color: #A6ADC8;
+    font-size: 11px;
+}
+QStatusBar[role="error"] {
+    color: #F38BA8;
+}
+
+/* ── Splitter ───────────────────────────────────────────────────── */
+
+QSplitter::handle {
+    background: #313244;
+}
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+QSplitter::handle:vertical {
+    height: 1px;
+}
+
+/* ── ScrollArea ─────────────────────────────────────────────────── */
+
+QScrollArea {
+    border: none;
+    background: #11111B;
+}
+
+/* ── ScrollBar ──────────────────────────────────────────────────── */
 
 QScrollBar:vertical {
     background: #181825;
@@ -39,3 +104,204 @@ QScrollBar::handle:horizontal {
     border-radius: 4px;
     min-width: 20px;
 }
+QScrollBar::handle:horizontal:hover { background: #585B70; }
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal { width: 0; }
+
+/* ── ChatWidget ─────────────────────────────────────────────────── */
+
+#messagesContainer {
+    background: #11111B;
+}
+
+/* Loading label */
+#loadingLabel {
+    color: #89B4FA;
+    font-size: 12px;
+    padding: 4px 12px;
+    background: #1E1E2E;
+}
+
+/* Input frame */
+#inputFrame {
+    background: #1E1E2E;
+    border-top: 1px solid #313244;
+}
+
+/* Input text edit */
+#inputEdit {
+    background: #313244;
+    color: #CDD6F4;
+    border-radius: 6px;
+    padding: 6px 10px;
+    border: 1px solid #45475A;
+    font-size: 13px;
+}
+#inputEdit:focus {
+    border-color: #89B4FA;
+}
+
+/* Send button */
+#sendButton {
+    background: #2563EB;
+    color: white;
+    border-radius: 17px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+}
+#sendButton:hover {
+    background: #1D4ED8;
+}
+#sendButton:pressed {
+    background: #1E40AF;
+}
+#sendButton:disabled {
+    background: #45475A;
+}
+
+/* ── Message Bubbles ─────────────────────────────────────────────── */
+
+QLabel[role="user"] {
+    background: #2563EB;
+    color: white;
+    border-radius: 12px;
+    padding: 8px 12px;
+    max-width: 480px;
+}
+
+QLabel[role="assistant"] {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    border-radius: 12px;
+    padding: 8px 12px;
+    max-width: 480px;
+    border: 1px solid #313244;
+}
+
+/* Timestamp in message bubble */
+#timestampLabel {
+    color: #666666;
+    font-size: 10px;
+}
+
+/* Context hint label (file selection indicator) */
+#contextHint {
+    color: #89B4FA;
+    font-size: 11px;
+    padding: 3px 8px;
+    background: #1E1E2E;
+    border-radius: 4px;
+    border: 1px solid #313244;
+}
+
+/* ── DiffViewer ─────────────────────────────────────────────────── */
+
+/* Header */
+#diffHeader {
+    background: #181825;
+    color: #CDD6F4;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #313244;
+}
+
+/* Stats bar */
+#statsLabel {
+    background: #1E1E2E;
+    color: #A6ADC8;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-bottom: 1px solid #313244;
+}
+
+/* Summary/diff text edits */
+#summaryEdit {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    border: none;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 12px;
+}
+
+#diffEdit {
+    background: #11111B;
+    color: #CDD6F4;
+    border: none;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 11px;
+}
+
+/* Button bar */
+#buttonBar {
+    background: #181825;
+    border-top: 1px solid #313244;
+}
+
+/* Reject button */
+#rejectButton {
+    background: #45475A;
+    color: #CDD6F4;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+    border: none;
+}
+#rejectButton:hover {
+    background: #585B70;
+}
+
+/* Accept button */
+#acceptButton {
+    background: #40A02B;
+    color: white;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+    border: none;
+    font-weight: bold;
+}
+#acceptButton:hover {
+    background: #4CC32E;
+}
+
+/* ── FileExplorer ────────────────────────────────────────────────── */
+
+#filterEdit {
+    background: #313244;
+    color: #CDD6F4;
+    border: none;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+#filterEdit:focus {
+    border-bottom: 2px solid #89B4FA;
+}
+
+#fileTree {
+    background: #181825;
+    color: #CDD6F4;
+    border: none;
+    font-size: 12px;
+}
+#fileTree::item:hover {
+    background: #313244;
+}
+#fileTree::item:selected {
+    background: #2563EB;
+    color: white;
+}
+
+/* ── TextEditor ─────────────────────────────────────────────────── */
+
+QPlainTextEdit {
+    background: #1E1E2E;
+    color: #CDD6F4;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    font-size: 13px;
+    border: none;
+    selection-background-color: #313244;
+}
+
+/* Line number area background is painted via QPainter in C++ */

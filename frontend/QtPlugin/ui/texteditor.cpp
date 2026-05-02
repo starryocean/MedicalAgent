@@ -100,17 +100,8 @@ TextEditor::TextEditor(QWidget* parent)
 
 void TextEditor::setupEditor() {
     // Catppuccin Mocha dark theme for the editor
-    setStyleSheet(
-        "QPlainTextEdit {"
-        "  background: #1E1E2E;"
-        "  color: #CDD6F4;"
-        "  font-family: 'JetBrains Mono', 'Consolas', monospace;"
-        "  font-size: 13px;"
-        "  border: none;"
-        "  selection-background-color: #313244;"
-        "}"
-    );
-
+    // Editor background, foreground, and selection colors are set via
+    // the QPlainTextEdit selector in dark_theme.qss
     QFont font("JetBrains Mono", 13);
     font.setFixedPitch(true);
     setFont(font);

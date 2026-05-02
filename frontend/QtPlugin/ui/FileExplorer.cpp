@@ -20,11 +20,7 @@ void FileExplorer::setupUi() {
     // Filter input
     m_filterEdit = new QLineEdit(this);
     m_filterEdit->setPlaceholderText("Filter files...");
-    m_filterEdit->setStyleSheet(
-        "QLineEdit { background: #313244; color: #CDD6F4; border: none;"
-        "padding: 6px 10px; font-size: 12px; }"
-        "QLineEdit:focus { border-bottom: 2px solid #89B4FA; }"
-    );
+    m_filterEdit->setObjectName("filterEdit");
 
     // File system model - show only INI files and directories
     m_model = new QFileSystemModel(this);
@@ -39,6 +35,7 @@ void FileExplorer::setupUi() {
 //    proxy->setRecursiveFilteringEnabled(true);
 
     m_treeView = new QTreeView(this);
+    m_treeView->setObjectName("fileTree");
     m_treeView->setModel(proxy);
     m_treeView->setRootIndex(proxy->mapFromSource(
         m_model->index(QDir::homePath())
@@ -48,15 +45,6 @@ void FileExplorer::setupUi() {
     m_treeView->header()->hideSection(3); // Date
     m_treeView->setAnimated(true);
     m_treeView->setIndentation(16);
-    m_treeView->setStyleSheet(
-        "QTreeView { background: #181825; color: #CDD6F4; border: none;"
-        "font-size: 12px; }"
-        "QTreeView::item:hover    { background: #313244; }"
-        "QTreeView::item:selected { background: #2563EB; color: white; }"
-        "QTreeView::branch:has-children:!has-siblings:closed,"
-        "QTreeView::branch:closed:has-children:has-siblings {"
-        "  border-image: none; }"
-    );
 
     layout->addWidget(m_filterEdit);
     layout->addWidget(m_treeView, 1);

@@ -5,6 +5,10 @@ Reference: Anthropic prompt engineering guide + LangChain prompt templates.
 """
 from __future__ import annotations
 
+import os
+from pathlib import Path
+from jinja2 import Template
+
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 # ── System Prompt ─────────────────────────────────────────────────────────────
@@ -98,3 +102,11 @@ def build_data_cleaning_prompt() -> ChatPromptTemplate:
         ("system", DATA_CLEANING_SYSTEM_PROMPT),
         ("human", "Source: {source}\nTarget: {target}\nLanguage pair: {lang_pair}"),
     ])
+
+
+def render_prompt(template_name: str, **kwargs) -> str:
+    """Render a Jinja2 template from the prompts directory."""
+    template_path = Path(__file__).parent.parent / "prompts" / template_name
+    with open(template_path, "r", encoding="utf-8") as f:
+        template = Template(f.read())
+    return template.render(**kwargs)

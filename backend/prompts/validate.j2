@@ -1,0 +1,20 @@
+## Validation Task
+Review the following translation pairs for consistency with the internal terminology library.
+
+## Translation Pairs
+{% for item in translations %}
+- Source: "{{ item.source }}" → Target: "{{ item.target }}"
+{% endfor %}
+
+## Rules
+1. Each source term must have exactly one translation.
+2. Identical source terms MUST map to identical targets.
+3. Library-matched terms (score ≥ 0.95) must not deviate from library translation.
+4. Placeholders ({0}, %s, %d, {name}) must be present and identical in target.
+
+Return JSON:
+{
+  "valid": true/false,
+  "issues": ["description of each issue found"],
+  "suggestions": ["optional fix for each issue"]
+}

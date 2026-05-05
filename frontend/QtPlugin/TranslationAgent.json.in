@@ -1,0 +1,14 @@
+{
+    "Name" : "TranslationAgent",
+    "Version" : "1.0.0",
+    "CompatVersion" : "1.0.0",
+    "Vendor" : "YourCompany",
+    "Copyright" : "(C) 2026 YourCompany",
+    "License" : "Commercial",
+    "Description" : "Medical multilingual translation agent sidebar for Qt Creator.",
+    "Url" : "https://your.company/medtrans",
+    "Dependencies" : [
+        { "Name" : "Core", "Version" : "$$QTCREATOR_VERSION" },
+        { "Name" : "TextEditor", "Version" : "$$QTCREATOR_VERSION" }
+    ]
+}

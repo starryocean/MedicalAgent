@@ -1,0 +1,25 @@
+## Task
+Translate the following Chinese medical terms into **{{ target_language }}**.
+
+## User Instruction
+{{ user_instruction or "(none)" }}
+
+## Internal Terminology Context
+{% for item in retrieved_terms %}
+### Source: "{{ item.source }}"
+{% if item.candidates %}
+Candidate translations from library:
+{% for c in item.candidates %}
+- [{{ c.term_id }}] "{{ c.source }}" → "{{ c.target }}" (score={{ "%.2f"|format(c.score) }})
+{% endfor %}
+{% else %}
+(no library match — translate carefully, mark as unverified)
+{% endif %}
+{% endfor %}
+
+## Source Texts (translate ALL, in order)
+{% for t in source_texts %}
+{{ loop.index }}. {{ t }}
+{% endfor %}
+
+Return JSON only.

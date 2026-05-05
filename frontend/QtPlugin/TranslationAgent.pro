@@ -24,7 +24,8 @@ SOURCES += \
     ui/TextEditor.cpp \
     ui/DiffViewer.cpp \
     network/AgentClient.cpp \
-    models/FileModel.cpp
+    models/FileModel.cpp \
+    TranslationAgentPlugin.cpp
 
 # ── Headers ───────────────────────────────────────────────────────────────────
 HEADERS += \
@@ -38,11 +39,15 @@ HEADERS += \
     network/ApiModels.h \
     models/ChatMessage.h \
     models/FileModel.h \
-    models/TranslationContext.h
+    models/TranslationContext.h \
+    TranslationAgentPlugin.h \
+    TranslationAgentGlobal.h
 
 # ── Resources ─────────────────────────────────────────────────────────────────
 RESOURCES += \
     resources/resources.qrc
+
+DISTFILES += TranslationAgent.json.in
 
 # ── Include path ──────────────────────────────────────────────────────────────
 INCLUDEPATH += $$PWD

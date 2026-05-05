@@ -1,57 +1,87 @@
-"""
-Application entry point with lifespan management.
-"""
-from __future__ import annotations
-
-import structlog
-import uvicorn
-from fastapi import FastAPI
+"""FastAPI server exposing the translation agent."""
+import logging
+import uuid
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api.routes import router, setup_dependencies
-from backend.config.settings import get_settings
-from backend.knowledge.knowledge_base import TranslationKnowledgeBase
-from backend.memory.session_memory import SessionMemoryManager
+from config.config import get_settings
+from schemas.schemas import TranslationRequest, TranslationResponse, TranslationItem, TranslationMeta
+from graph.workflow import build_graph
 
-logger = structlog.get_logger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+log = logging.getLogger("medtrans")
+
+_graph = None
 
 
-def create_app() -> FastAPI:
-    settings = get_settings()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global _graph
+    log.info("Building agent graph...")
+    _graph = build_graph()
+    log.info("Agent ready.")
+    yield
 
-    app = FastAPI(
-        title="Translation Agent API",
-        version="1.0.0",
-        description="AI-powered multi-language translation agent",
+
+app = FastAPI(title="MedTrans Agent", version="1.0.0", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware, allow_origins=["*"],
+    allow_methods=["*"], allow_headers=["*"],
+)
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
+@app.post("/v1/translate", response_model=TranslationResponse)
+async def translate(req: TranslationRequest) -> TranslationResponse:
+    if not req.source_texts:
+        raise HTTPException(400, "source_texts must not be empty")
+
+    initial_state = {
+        "session_id": req.session_id or str(uuid.uuid4()),
+        "source_texts": req.source_texts,
+        "target_language": req.target_language,
+        "user_instruction": req.user_instruction,
+        "retrieved_terms": [],
+        "draft_translations": [],
+        "validation_issues": [],
+        "reflection_count": 0,
+        "max_reflections": 2,
+        "final_translations": [],
+        "warnings": [],
+        "tokens_used": 0,
+    }
+
+    try:
+        final = await _graph.ainvoke(initial_state)
+    except Exception as e:
+        log.exception("Agent failure")
+        raise HTTPException(500, f"Agent failure: {e}")
+
+    return TranslationResponse(
+        translations=[
+            TranslationItem(
+                source=t["source"],
+                target=t["target"],
+                term_refs=t.get("term_refs", []),
+                confidence=t.get("confidence", 1.0),
+            ) for t in final["final_translations"]
+        ],
+        meta=TranslationMeta(
+            warnings=final.get("warnings", []),
+            tokens_used=final.get("tokens_used", 0),
+        ),
     )
-
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-    @app.on_event("startup")
-    async def startup() -> None:
-        logger.info("server_starting", host=settings.host, port=settings.port)
-        kb = TranslationKnowledgeBase()
-        kb.initialize()
-        memory = SessionMemoryManager()
-        setup_dependencies(kb, memory)
-        logger.info("server_ready")
-
-    app.include_router(router)
-    return app
 
 
 if __name__ == "__main__":
-    settings = get_settings()
-    uvicorn.run(
-        "backend.main:create_app",
-        factory=True,
-        host=settings.host,
-        port=settings.port,
-        reload=settings.debug,
-        log_level=settings.log_level.lower(),
-    )
+    import uvicorn
+    s = get_settings()
+    uvicorn.run("main:app", host=s.host, port=s.port, reload=False)
